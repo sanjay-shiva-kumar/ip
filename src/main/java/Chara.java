@@ -35,7 +35,7 @@ public class Chara {
         System.out.println(logo);
         System.out.println(charaSprite);
         System.out.println("Chara: Greetings.");
-        System.out.println("Chara: I am Chara.");
+        System.out.println("Chara: I am Chara! =)");
         printLine(lineLen);
     }
     public static void main(String[] args) {
@@ -46,7 +46,7 @@ public class Chara {
 
             String userIn = echo.nextLine();
             if (userIn.equals("bye")) {
-                System.out.println("Chara: Let us erase this pointless world, and move on to the next.");
+                System.out.println("Chara: Let us erase this chat, and move on to the next.");
                 printLine(lineLen);
                 return;
             } else {
