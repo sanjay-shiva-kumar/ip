@@ -63,9 +63,9 @@ public class Chara {
             }
         }*/
         String[] inputList = new String[100];
-        System.out.print("User: ");
         int listLength = 0;
         while (true) {
+            System.out.print("User: ");
             String userIn = echo.nextLine();
             if (userIn.equals("bye")) {
                 System.out.println("Chara: Let us erase this chat, and move on to the next =)");
