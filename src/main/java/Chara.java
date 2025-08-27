@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Chara {
-    public static long lineLen = 50;
+    public static long lineLen = 80;
 
     public static void printLine(long length) {
         for (long i = 0; i < length; i+=1) {
@@ -19,10 +19,23 @@ public class Chara {
                 | |___|  _  |/ ___ \\|  _ < ___ \\\s
                  \\____|_| |_/_/   \\_\\_| \\_\\_/ \\_\\
                 """;
-        System.out.print(logo);
-        printLine(lineLen);
-        System.out.println("Hello! I'm Chara!");
-        System.out.println("What can I do for you?");
+        String charaSprite = """
+                ⣿⣿⡿⠛⠉⠉⠉⠉⠉⠉⠉⠛⣿⣿⣿
+                ⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠹⣿
+                ⡏⠁⠀⣤⣶⣦⠀⣤⣤⣤⡀⠀⠀⠀⢿
+                ⠁⠀⣶⣿⡇⢸⣿⣿⡇⢸⣿⠀⣀⡆⠀
+                ⠀⠀⣿⣿⣷⡞⢿⠿⠓⣾⣿⡶⠋⠁⠀
+                ⡀⢀⠀⠉⠩⠿⠶⣶⣿⠏⠉⠀⢀⡀⣀
+                ⣧⣼⣦⣤⣤⡤⠐⠿⠿⠠⢤⣤⣸⣧⣿
+                ⣿⣿⠛⣭⠉⡵⠤⡤⠤⡴⣤⠉⡝⢻⣿
+                ⣿⡇⠇⠀⣿⣿⣿⣿⣿⣿⣿⡄⠸⠇⣿
+                ⣿⡇⠒⠀⠁⠈⠀⠁⠈⠀⠀⠁⠐⠂⣿
+                ⣿⣿⣿⠀⠀⠀⢠⣤⠀⠀⠀⠀⢸⣿⣿
+                ⣿⣿⣿⣶⠒⠀⠰⣿⠀⠀⠀⠒⣾⣿⣿""";
+        System.out.println(logo);
+        System.out.println(charaSprite);
+        System.out.println("Chara: Greetings.");
+        System.out.println("Chara: I am Chara.");
         printLine(lineLen);
     }
     public static void main(String[] args) {
@@ -33,11 +46,11 @@ public class Chara {
 
             String userIn = echo.nextLine();
             if (userIn.equals("bye")) {
-                System.out.println("Bye. Hope to see you again soon!");
+                System.out.println("Chara: Let us erase this pointless world, and move on to the next.");
                 printLine(lineLen);
                 return;
             } else {
-                System.out.println(userIn);
+                System.out.println("Chara: " + userIn);
                 printLine(lineLen);
             }
         }
