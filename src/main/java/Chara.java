@@ -47,31 +47,31 @@ public class Chara {
         }
     }
 
+    public static boolean isInteger(String input) {
+        if (input == null) {
+            return false;
+        }
+        try {
+            Integer.parseInt(input.trim());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+
     public static void main(String[] args) {
         initialPrint();
         Scanner echo = new Scanner(System.in);
-        /*while (true) {
-            System.out.print("User: ");
-
-            String input = echo.nextLine();
-            if (input.equals("bye")) {
-                System.out.println("Chara: Let us erase this chat, and move on to the next.");
-                printLine(lineLen);
-                return;
-            } else {
-                System.out.println("Chara: " + input);
-                printLine(lineLen);
-            }
-        }*/
         Task[] list = new Task[100];
         int listLength = 0;
         while (true) {
             System.out.print("User: ");
             String input = echo.nextLine();
+
             if (input.equals("bye")) {
                 System.out.println("Chara: Let us erase this chat, and move on to the next =)");
                 String dogSprite = """
-                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⠀⠀⢸⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣷⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣤⣾⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -99,13 +99,40 @@ public class Chara {
                 System.out.println(dogSprite);
                 printLine(lineLen);
                 return;
-            } else if (input.equals("list") && listLength == 0) { // user requests empty list
+            }
+
+            String[] words = input.split(" ");
+            if (input.equals("list") && listLength == 0) { // user requests empty list
                 System.out.println("Chara: Your list is empty, silly!");
                 printLine(lineLen);
             } else if (input.equals("list") && listLength != 0) { // user requests non-empty list
                 System.out.println("Chara: Here's your list! (What's it for anyway?)");
                 printList(list, listLength);
                 printLine(lineLen);
+            } else if (words.length == 2 && words[0].equals("mark") && isInteger(words[1])) {
+                int taskNum = Integer.parseInt(words[1].trim());
+                if (taskNum > 0 && taskNum <= listLength) {
+                    list[taskNum-1].markAsDone();
+                    System.out.println("Chara: You never fail to impress!");
+                    list[taskNum-1].printTask();
+                    System.out.println();
+                    printLine(lineLen);
+                } else {
+                    System.out.println("Chara: That task doesn't exist...");
+                    printLine(lineLen);
+                }
+            } else if (words.length == 2 && words[0].equals("unmark") && isInteger(words[1])) {
+                int taskNum = Integer.parseInt(words[1].trim());
+                if (taskNum > 0 && taskNum <= listLength) {
+                    list[taskNum-1].markAsNotDone();
+                    System.out.println("Chara: This feels familiar.");
+                    list[taskNum-1].printTask();
+                    System.out.println();
+                    printLine(lineLen);
+                } else {
+                    System.out.println("Chara: That task doesn't exist...");
+                    printLine(lineLen);
+                }
             } else { // user adds something to list
                 Task t = new Task(input);
                 list[listLength] = t;

@@ -26,5 +26,4 @@ public class Task {
     public void printTask() {
         System.out.print(statusIcon + ' ' + description);
     }
-    //...
 }
