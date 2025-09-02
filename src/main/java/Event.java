@@ -1,0 +1,27 @@
+public class Event extends Task {
+    protected String from;
+    protected String to;
+
+    /**
+     * Constructs an Event task with the given description, start time, and end time.
+     *
+     * @param description description of the event
+     * @param from start date/time of the event
+     * @param to end date/time of the event
+     */
+    public Event(String description, String from, String to) {
+        super(description);
+        this.from = from;
+        this.to = to;
+    }
+
+    @Override
+    public String getTaskTypeIcon() {
+        return "[E]";
+    }
+
+    @Override
+    public void printTask() {
+        System.out.print(taskTypeIcon + statusIcon + ' ' + description + " (from: " + from + " to: " + to + ")");
+    }
+}
