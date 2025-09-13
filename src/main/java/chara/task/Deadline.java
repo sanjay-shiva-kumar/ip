@@ -1,8 +1,10 @@
+package chara.task;
+
 public class Deadline extends Task {
     protected String by;
 
     /**
-     * Constructs a Deadline task with the given description and due date.
+     * Constructs a chara.task.Deadline task with the given description and due date.
      *
      * @param description description of the task
      * @param by deadline date/time as a string

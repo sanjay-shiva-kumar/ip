@@ -1,9 +1,11 @@
+package chara.task;
+
 public class Event extends Task {
     protected String from;
     protected String to;
 
     /**
-     * Constructs an Event task with the given description, start time, and end time.
+     * Constructs an chara.task.Event task with the given description, start time, and end time.
      *
      * @param description description of the event
      * @param from start date/time of the event

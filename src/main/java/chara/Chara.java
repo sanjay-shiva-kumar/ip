@@ -1,4 +1,15 @@
+package chara;
+
 import java.util.Scanner;
+
+import chara.exception.BadFormatException;
+import chara.exception.CharaException;
+import chara.exception.EmptyDescriptionException;
+import chara.exception.UnknownCommandException;
+import chara.task.Deadline;
+import chara.task.Event;
+import chara.task.Task;
+import chara.task.Todo;
 
 public class Chara {
     public static long lineLen = 80;
@@ -43,7 +54,7 @@ public class Chara {
         System.out.println(logo);
         System.out.println(charaSprite);
         System.out.println("Chara: Greetings.");
-        System.out.println("Chara: I am Chara! =)");
+        System.out.println("Chara: I am chara.Chara! =)");
         printLine(lineLen);
     }
 
@@ -154,10 +165,10 @@ public class Chara {
 
     /**
      * Creates the appropriate Task subclass (Todo, Deadline, Event) from user input.
-     * Throws a CharaException if the input is not a valid command or has the wrong format.
+     * Throws a chara.exception.CharaException if the input is not a valid command or has the wrong format.
      *
      * @param input user input string
-     * @return the created Task object
+     * @return the created chara.task.Task object
      * @throws CharaException if the input is invalid or does not match any command
      */
     private static Task createTaskFromInput(String input) throws CharaException {
@@ -217,13 +228,13 @@ public class Chara {
     }
 
     private static String taskPreview(Task t) {
-        return t.taskTypeIcon + t.statusIcon + ' ' + t.description;
+        return t.getTaskTypeIcon() + t.getStatusIcon() + ' ' + t.getDescription();
     }
 
     /**
      * Runs the main loop of the chatbot.
      * Continuously reads user input, processes commands, and manages the task list.
-     * All invalid commands are handled by throwing and catching CharaException.
+     * All invalid commands are handled by throwing and catching chara.exception.CharaException.
      *
      * @param args command-line arguments (unused)
      */

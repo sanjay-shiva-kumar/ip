@@ -1,3 +1,5 @@
+package chara.task;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -5,7 +7,7 @@ public class Task {
     protected String statusIcon;
 
     /**
-     * Constructs a Task with the given description, initially not done.
+     * Constructs a chara.task.Task with the given description, initially not done.
      *
      * @param description description of the task
      */
