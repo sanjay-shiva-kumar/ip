@@ -1,4 +1,6 @@
-class UnknownCommandException extends CharaException {
+package chara.exception;
+
+public class UnknownCommandException extends CharaException {
     public UnknownCommandException() {
         super("I don't know what you want from me... =(");
     }
