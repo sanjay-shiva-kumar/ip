@@ -1,5 +1,7 @@
 package chara;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import chara.exception.BadFormatException;
@@ -54,7 +56,7 @@ public class Chara {
         System.out.println(logo);
         System.out.println(charaSprite);
         System.out.println("Chara: Greetings.");
-        System.out.println("Chara: I am chara.Chara! =)");
+        System.out.println("Chara: I am Chara! =)");
         printLine(lineLen);
     }
 
@@ -95,13 +97,12 @@ public class Chara {
     /**
      * Prints the current list of tasks with their indices.
      *
-     * @param tasks array of tasks
-     * @param tasksLength number of tasks currently in the list
+     * @param tasks ArrayList of tasks
      */
-    public static void printList(Task[] tasks, int tasksLength) {
-        for (int i = 0; i < tasksLength; i += 1) {
-            System.out.print(i + 1 + ". ");
-            tasks[i].printTask();
+    public static void printList(List<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i += 1) {
+            System.out.print((i + 1) + ". ");
+            tasks.get(i).printTask();
             System.out.println();
         }
     }
@@ -130,11 +131,10 @@ public class Chara {
      * an invalid task number.
      *
      * @param input user input string starting with "mark" or "unmark"
-     * @param tasks the array of current tasks
-     * @param tasksLength number of tasks currently in the list
+     * @param tasks the ArrayList of current tasks
      * @throws CharaException if the command format is invalid or the task number is out of range
      */
-    private static void handleMarkCommands(String input, Task[] tasks, int tasksLength) throws CharaException {
+    private static void handleMarkCommands(String input, List<Task> tasks) throws CharaException {
         String[] parts = input.split("\\s+", 2);
         boolean hasTwoParts = parts.length == 2;
         boolean isMark = parts[0].equals("mark");
@@ -145,23 +145,24 @@ public class Chara {
                 throw new BadFormatException("Use this format: \"" + parts[0] + " <task_number>\" =)");
             }
             int taskNum = Integer.parseInt(parts[1].trim());
-            if (taskNum <= 0 || taskNum > tasksLength) {
+            if (taskNum <= 0 || taskNum > tasks.size()) {
                 System.out.println("Chara: That task doesn't exist...");
                 return;
             }
-            Task t = tasks[taskNum - 1];
+            Task t = tasks.get(taskNum - 1);
             if (isMark) {
                 t.markAsDone();
                 System.out.println("Chara: You never fail to impress!");
+                System.out.print("Marked as done: ");
             } else {
                 t.markAsNotDone();
                 System.out.println("Chara: This feels familiar.");
+                System.out.print("Unmarked as done: ");
             }
             t.printTask();
             System.out.println();
         }
     }
-
 
     /**
      * Creates the appropriate Task subclass (Todo, Deadline, Event) from user input.
@@ -242,8 +243,7 @@ public class Chara {
         printIntro();
         Scanner echo = new Scanner(System.in);
 
-        Task[] tasks = new Task[100];
-        int tasksLength = 0;
+        List<Task> tasks = new ArrayList<>();
 
         while (true) {
             System.out.print("User: ");
@@ -255,11 +255,11 @@ public class Chara {
             }
 
             if (input.equals("list")) {
-                if (tasksLength == 0) {
+                if (tasks.isEmpty()) {
                     System.out.println("Chara: Your list is empty, silly!");
                 } else {
                     System.out.println("Chara: Here's your list! (What's it for anyway?)");
-                    printList(tasks, tasksLength);
+                    printList(tasks);
                 }
                 printLine(lineLen);
                 continue;
@@ -267,25 +267,20 @@ public class Chara {
 
             try {
                 if (input.startsWith("mark") || input.startsWith("unmark")) {
-                    handleMarkCommands(input, tasks, tasksLength);
+                    handleMarkCommands(input, tasks);
                     printLine(lineLen);
                     continue; // skip rest of loop, since it was a mark command
                 }
 
                 Task added = createTaskFromInput(input);
-                if (tasksLength < tasks.length) {
-                    tasks[tasksLength] = added;
-                    tasksLength += 1;
-                    System.out.println("Chara has added \"" + taskPreview(added) + "\" to your list.");
-                    System.out.println("Now you have " + tasksLength + " task(s) in your list! =)");
-                } else {
-                    System.out.println("Chara: Your list is full! (Wow.)");
-                }
+                tasks.add(added);  // no need for tasksLength or capacity checks
+                System.out.println("Chara has added \"" + taskPreview(added) + "\" to your list.");
+                System.out.println("Now you have " + tasks.size() + " task(s) in your list! =)");
+
             } catch (CharaException e) {
                 System.out.println("Chara: " + e.getMessage());
             }
             printLine(lineLen);
-
         }
     }
 }
