@@ -1,6 +1,7 @@
 package chara;
 
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,6 +19,8 @@ import chara.task.Todo;
 
 public class Chara {
     public static long lineLen = 80;
+
+    private static final Path SAVE_PATH = Paths.get("data", "chara.txt");
 
 
     /**
@@ -282,6 +285,13 @@ public class Chara {
         return t.getTaskTypeIcon() + t.getStatusIcon() + ' ' + t.getDescription();
     }
 
+    private static void saveQuietly(List<Task> tasks) {
+        try {
+            Storage.save(tasks, SAVE_PATH);
+        } catch (Exception e) {
+            System.out.println("Chara: Couldn't SAVE to disk just now (it's okay, try again with more DETERMINATION!).");
+        }
+    }
 
     /**
      * Runs the main loop of the chatbot.
@@ -296,6 +306,12 @@ public class Chara {
 
 
         List<Task> tasks = new ArrayList<>();
+        try {
+            tasks = Storage.load(SAVE_PATH);
+        } catch (Exception e) {
+            tasks = new ArrayList<>();
+            System.out.println("Chara: A fresh start! (no save file yet).");
+        }
 
 
         while (true) {
@@ -324,6 +340,7 @@ public class Chara {
             try {
                 if (input.startsWith("mark") || input.startsWith("unmark")) {
                     handleMarkCommands(input, tasks);
+                    saveQuietly(tasks);
                     printLine(lineLen);
                     continue; // skip rest of loop, since it was a mark command
                 }
@@ -331,16 +348,16 @@ public class Chara {
 
                 if (input.startsWith("delete")) {
                     handleDeleteCommand(input, tasks);
+                    saveQuietly(tasks);
                     printLine(lineLen);
                     continue;
                 }
-
 
                 Task added = createTaskFromInput(input);
                 tasks.add(added);  // no need for tasksLength or capacity checks
                 System.out.println("Chara has added \"" + taskPreview(added) + "\" to your list.");
                 System.out.println("Now you have " + tasks.size() + " task(s) in your list! =)");
-
+                saveQuietly(tasks);
 
             } catch (CharaException e) {
                 System.out.println("Chara: " + e.getMessage());
