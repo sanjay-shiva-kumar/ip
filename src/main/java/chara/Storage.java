@@ -38,54 +38,77 @@ public final class Storage {
      */
     public static List<Task> load(Path path) throws IOException {
         List<Task> tasks = new ArrayList<>();
+
+        // First run: no file yet → ensure parent dir exists and return empty list
         if (!Files.exists(path)) {
-            // First run: make sure parent directory exists; return empty list.
-            if (path.getParent() != null) Files.createDirectories(path.getParent());
+            if (path.getParent() != null) {
+                Files.createDirectories(path.getParent());
+            }
             return tasks;
         }
 
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         for (String line : lines) {
-            if (line.isBlank()) continue;
-            String[] t = line.split("\\|", -1);
+            if (line == null) continue;
+            line = line.trim();
+            if (line.isEmpty()) continue;
+
             try {
-                switch (t[0]) {
+                // Expect: "<Type> | <0/1> | <rest>"
+                String[] parts = line.split("\\|", 3);
+                if (parts.length < 3) continue;
+
+                String type = parts[0].trim();              // T / D / E
+                boolean done = "1".equals(parts[1].trim()); // 1 = done, 0 = not done
+                String rest = parts[2].trim();              // description + optional "(by: ...)" / "(from: ... to: ...)"
+
+                Task t;
+                switch (type) {
                 case "T": {
-                    boolean done = "1".equals(t[1]);
-                    String desc = t[2];
-                    Task td = new Todo(desc);
-                    if (done) td.markAsDone(); else td.markAsNotDone();
-                    tasks.add(td);
+                    // "desc"
+                    String desc = rest;
+                    t = new Todo(desc);
                     break;
                 }
                 case "D": {
-                    boolean done = "1".equals(t[1]);
-                    String desc = t[2];
-                    String by   = t[3];
-                    Task dl = new Deadline(desc, by);
-                    if (done) dl.markAsDone(); else dl.markAsNotDone();
-                    tasks.add(dl);
+                    // "desc (by: due)"
+                    int open = rest.lastIndexOf("(by:");
+                    int close = rest.lastIndexOf(")");
+                    if (open == -1 || close == -1 || close < open) continue;
+
+                    String desc = rest.substring(0, open).trim();
+                    String by   = rest.substring(open + 4, close).trim(); // after "(by:" to before ')'
+                    t = new Deadline(desc, by);
                     break;
                 }
                 case "E": {
-                    boolean done = "1".equals(t[1]);
-                    String desc  = t[2];
-                    String from  = t[3];
-                    String to    = t[4];
-                    Task ev = new Event(desc, from, to);
-                    if (done) ev.markAsDone(); else ev.markAsNotDone();
-                    tasks.add(ev);
+                    // "desc (from: start to: end)"
+                    int fromIdx = rest.indexOf("(from:");
+                    int toIdx   = rest.indexOf("to:", Math.max(fromIdx, 0));
+                    int close   = rest.lastIndexOf(")");
+                    if (fromIdx == -1 || toIdx == -1 || close == -1 || !(fromIdx < toIdx && toIdx < close)) continue;
+
+                    String desc = rest.substring(0, fromIdx).trim();
+                    String from = rest.substring(fromIdx + 6, toIdx).trim(); // after "(from:" up to "to:"
+                    String to    = rest.substring(toIdx + 3, close).trim();  // after "to:" up to ')'
+                    t = new Event(desc, from, to);
                     break;
                 }
                 default:
-                    // Unknown line type: skip it (stretch: log a warning)
+                    continue; // unknown type
                 }
+
+                if (done) t.markAsDone(); else t.markAsNotDone();
+                tasks.add(t);
+
             } catch (Exception ignoreMalformedLine) {
-                // Corrupted/short line: skip but continue loading others
+                // Skip malformed/corrupted lines but keep loading the rest
             }
         }
+
         return tasks;
     }
+
 
     /**
      * Saves the current list of tasks to the specified file in a human-readable format.
