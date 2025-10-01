@@ -5,7 +5,7 @@ public class Event extends Task {
     protected String to;
 
     /**
-     * Constructs an chara.task.Event task with the given description, start time, and end time.
+     * Constructs a chara.task.Event task with the given description, start time, and end time.
      *
      * @param description description of the event
      * @param from start date/time of the event

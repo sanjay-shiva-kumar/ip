@@ -22,7 +22,7 @@ import chara.task.Todo;
  *   D | 1 | return book (by: June 6th)
  *   E | 0 | project meeting (from: Aug 6th 2pm to: 4pm)
  */
-public final class Storage {
+public class Storage {
     private Storage() {}
 
     /**
@@ -36,8 +36,8 @@ public final class Storage {
      * @return a list of tasks reconstructed from the file, or an empty list if the file does not exist
      * @throws IOException if an I/O error occurs during reading
      */
-    public static List<Task> load(Path path) throws IOException {
-        List<Task> tasks = new ArrayList<>();
+    public static TaskList load(Path path) throws IOException {
+        TaskList tasks = new TaskList();
 
         // First run: no file yet → ensure parent dir exists and return empty list
         if (!Files.exists(path)) {
@@ -109,6 +109,21 @@ public final class Storage {
         return tasks;
     }
 
+    /**
+     * Saves the given list of tasks to the specified file path.
+     * Unlike {@link #save(List, Path)}, this method suppresses any thrown
+     * exceptions and prints an error message instead.
+     *
+     * @param tasks   the list of tasks to save
+     * @param savePath the path of the file to save to
+     */
+    public static void saveQuietly(TaskList tasks, Path savePath) {
+        try {
+            save(tasks, savePath);
+        } catch (Exception e) {
+            System.out.println("Chara: Couldn't SAVE to disk just now (it's okay, try again with more DETERMINATION!).");
+        }
+    }
 
     /**
      * Saves the current list of tasks to the specified file in a human-readable format.
