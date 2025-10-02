@@ -68,7 +68,10 @@ Shows all current tasks in your list.
 
 **Usage:** `list`  
 **Expected Output:**
-
+Chara: Here's your list! (What's it for anyway?)
+1. [D][ ] essay final submission (by: friday 2359)
+2. [E][ ] concert (from: 19 oct 12pm to: 5pm)
+3. [T][X] get supper
 
 ---
 
@@ -77,10 +80,6 @@ Marks a task as done or not done.
 
 **Usage:** `mark INDEX` or `unmark INDEX`  
 **Example:** `mark 2`
-Chara: Here's your list! (What's it for anyway?)
-1. [D][ ] essay final submission (by: friday 2359)
-2. [E][ ] concert (from: 19 oct 12pm to: 5pm)
-3. [T][X] get supper
 
 ---
 
