@@ -59,6 +59,12 @@ public class Chara {
                     continue;
                 }
 
+                if (input.startsWith("find")) {
+                    Parser.handleFindCommand(input, tasks, ui);
+                    ui.printLine();
+                    continue;
+                }
+
                 Task added = Parser.createTaskFromInput(input);
                 tasks.add(added);
                 ui.printAdded(added, tasks.size());

@@ -1,5 +1,6 @@
 package chara;
 
+import java.util.List;
 import java.util.Scanner;
 
 import chara.task.Task;
@@ -197,4 +198,27 @@ public class Ui {
         System.out.println();
         System.out.println("Now you have " + newSize + " task(s) in your list! =)");
     }
+
+    /**
+     * Prints the results of a "find" command, showing the tasks whose
+     * descriptions matched the search keyword along with their original
+     * 1-based indices in the task list.
+     *
+     * @param tasks           the full TaskList of tasks
+     * @param matchingIndices the 1-based indices of matching tasks in the list
+     */
+    public void printFindResultsWithIndices(TaskList tasks, List<Integer> matchingIndices) {
+        if (matchingIndices.isEmpty()) {
+            System.out.println("Chara: I can't seem to find that...");
+            return;
+        }
+
+        System.out.println("Chara: Here's what I found! =)");
+        for (int index : matchingIndices) {
+            System.out.print(index + ". ");
+            tasks.get(index - 1).printTask();
+            System.out.println();
+        }
+    }
+
 }
