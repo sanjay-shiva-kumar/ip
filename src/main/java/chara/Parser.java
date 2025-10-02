@@ -1,5 +1,8 @@
 package chara;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import chara.exception.BadFormatException;
 import chara.exception.CharaException;
 import chara.exception.EmptyDescriptionException;
@@ -86,6 +89,39 @@ public class Parser {
         Task removed = tasks.remove(taskNum - 1);
         ui.printDeleted(removed, tasks.size());
     }
+
+    /**
+     * Handles the "find" command by searching for tasks whose descriptions
+     * contain the given keyword. Uses {@link TaskList#find(String)} to get
+     * matching tasks, and prints the results with their original indices.
+     *
+     * @param input the full user input string starting with "find"
+     * @param tasks the TaskList containing all current tasks
+     * @param ui the Ui instance for printing results
+     * @throws BadFormatException if the command does not include a keyword
+     */
+    public static void handleFindCommand(String input, TaskList tasks, Ui ui) throws BadFormatException {
+        String prefix = "find";
+        String remainder = input.substring(prefix.length()).trim();
+
+        boolean hasKeyword = !remainder.isEmpty();
+        if (!hasKeyword) {
+            throw new BadFormatException("Use this format: \"find <keyword>\" =)");
+        }
+
+        TaskList results = tasks.find(remainder);
+
+        List<Integer> matchingIndices = new ArrayList<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            if (results.contains(tasks.get(i))) {
+                matchingIndices.add(i + 1); // keep 1-based indexing
+            }
+        }
+
+        ui.printFindResultsWithIndices(tasks, matchingIndices);
+    }
+
+
 
     /**
      * Creates the appropriate Task subclass (Todo, Deadline, Event) from user input.
