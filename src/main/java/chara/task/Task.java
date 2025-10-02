@@ -1,5 +1,10 @@
 package chara.task;
 
+/**
+ * Represents a generic task with a description and completion status.
+ * Provides common behavior for different task types such as marking,
+ * unmarking, and retrieving details.
+ */
 public class Task {
     protected String description;
     protected boolean isDone;
