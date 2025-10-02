@@ -1,5 +1,9 @@
 package chara.task;
 
+/**
+ * Represents a task scheduled for a specific time range.
+ * Stores a description along with "/from" and "/to" times.
+ */
 public class Event extends Task {
     protected String from;
     protected String to;

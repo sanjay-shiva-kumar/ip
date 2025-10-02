@@ -5,6 +5,13 @@ import java.util.Scanner;
 
 import chara.task.Task;
 
+/**
+ * Handles all interactions with the user.
+ * Reads commands from the user,
+ * prints messages, task information, and error messages.
+ * Provides helper methods to keep input/output logic separate
+ * from the main program flow.
+ */
 public class Ui {
     private static final long LINE_LEN = 80;
     private final Scanner in = new Scanner(System.in);

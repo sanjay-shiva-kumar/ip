@@ -6,18 +6,15 @@ import java.nio.file.Paths;
 import chara.exception.CharaException;
 import chara.task.Task;
 
-
+/**
+ * Main entry point of the Chara program.
+ * Runs the chatbot loop by reading user input, delegating parsing to Parser,
+ * updating the task list, saving with Storage, and displaying results with Ui.
+ */
 public class Chara {
     private Ui ui;
     private static final Path SAVE_PATH = Paths.get("data", "chara.txt");
 
-    /**
-     * Runs the main loop of the chatbot.
-     * Continuously reads user input, processes commands, and manages the task list.
-     * All invalid commands are handled by throwing and catching chara.exception.CharaException.
-     *
-     * @param args command-line arguments (unused)
-     */
     public static void main(String[] args) {
         Ui ui = new Ui();
         ui.printIntro();
