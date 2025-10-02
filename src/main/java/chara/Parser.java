@@ -12,6 +12,11 @@ import chara.task.Event;
 import chara.task.Task;
 import chara.task.Todo;
 
+/**
+ * Interprets user input and determines the intended command.
+ * Provides helpers to parse commands like add, mark, delete, and find,
+ * and raises exceptions for invalid or badly formatted input.
+ */
 public class Parser {
 
     /**

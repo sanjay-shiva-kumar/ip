@@ -16,7 +16,9 @@ import chara.task.Todo;
 
 
 /**
- * Simple persistence layer for tasks.
+ * Manages persistence of tasks on disk.
+ * Provides methods to save tasks in a readable format and load them back,
+ * with a safe variant (saveQuietly) that suppresses exceptions.
  * File format (UTF-8, '|' separated):
  *   T | 0 |read book
  *   D | 1 | return book (by: June 6th)

@@ -1,5 +1,9 @@
 package chara.task;
 
+/**
+ * Represents a task that must be completed by a specific deadline.
+ * Stores a description and a "/by" time string.
+ */
 public class Deadline extends Task {
     protected String by;
 
